@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@android:drawable/ic_dialog_dialer"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_analysis"
+        android:icon="@android:drawable/ic_dialog_email"
+        android:title="Analysis" />
+    <item
+        android:id="@+id/nav_accounts"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="Accounts" />
+    <item
+        android:id="@+id/nav_more"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="More" />
+</menu>
