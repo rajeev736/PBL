@@ -1,5 +1,6 @@
 package com.example.pbl;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
@@ -19,5 +20,8 @@ public class MyNotificationListenerService extends NotificationListenerService {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("data", existing + "\n" + notificationData);
         editor.apply();
+
+        Intent intent = new Intent("com.example.pbl.NOTIFICATION_UPDATED");
+        sendBroadcast(intent);
     }
 }

@@ -1,7 +1,11 @@
 package com.example.pbl;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.Button;
@@ -50,4 +54,33 @@ public class DashboardActivity extends AppCompatActivity {
 
 
     }
+    private BroadcastReceiver notificationReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateNotifications();
+        }
+    };
+
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter("com.example.pbl.NOTIFICATION_UPDATED");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(notificationReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+        }
+        updateNotifications();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(notificationReceiver);
+    }
+
+    private void updateNotifications() {
+        TextView notificationBox = findViewById(R.id.notificationBox);
+        SharedPreferences prefs = getSharedPreferences("notifications", MODE_PRIVATE);
+        String notifications = prefs.getString("data", "No notifications yet.");
+        notificationBox.setText(notifications);
+    }
+
 }

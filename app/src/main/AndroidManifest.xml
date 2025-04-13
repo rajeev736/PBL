@@ -42,6 +42,7 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity android:name=".DashboardActivity" />
+        <activity android:name=".LoginActivity" />
 
     </application>
 
