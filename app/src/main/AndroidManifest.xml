@@ -43,6 +43,7 @@
             android:exported="false" />
         <activity android:name=".DashboardActivity" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".SignupActivity"/>
 
     </application>
 

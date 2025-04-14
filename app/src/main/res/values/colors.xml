@@ -3,5 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="teal_700">#018786</color> <!-- This is teal_700 -->
+    <color name="purple_500">#6200EE</color> <!-- You can choose any color code you prefer -->
+
 
 </resources>
