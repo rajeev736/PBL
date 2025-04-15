@@ -14,7 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -26,19 +26,16 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         Button resetButton = findViewById(R.id.resetButton);
-        TextView notificationBox = findViewById(R.id.notificationBox);
+        notificationBox = findViewById(R.id.notificationBox);
 
-        TextView finalNotificationBox = notificationBox;
         resetButton.setOnClickListener(v -> {
             SharedPreferences prefs = getSharedPreferences("notifications", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.remove("data"); // Clear stored notification data
+            editor.remove("data");
             editor.apply();
 
-            // Update UI
-            finalNotificationBox.setText("Notifications cleared.");
+            notificationBox.setText("Notifications cleared.");
         });
-
 
         // Ask for notification access if not enabled
         if (!NotificationManagerCompat.getEnabledListenerPackages(this).contains(getPackageName())) {
@@ -46,21 +43,31 @@ public class DashboardActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        notificationBox = findViewById(R.id.notificationBox); // Must be in layout
-
+        // Load saved notifications
         SharedPreferences prefs = getSharedPreferences("notifications", MODE_PRIVATE);
         String notifications = prefs.getString("data", "No notifications yet.");
         notificationBox.setText(notifications);
 
+        // Logout using Firebase
+        Button logoutButton = findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut(); // <- Firebase logout
 
+            Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
     }
-    private BroadcastReceiver notificationReceiver = new BroadcastReceiver() {
+
+    private final BroadcastReceiver notificationReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateNotifications();
         }
     };
 
+    @Override
     protected void onResume() {
         super.onResume();
         IntentFilter filter = new IntentFilter("com.example.pbl.NOTIFICATION_UPDATED");
@@ -77,10 +84,8 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void updateNotifications() {
-        TextView notificationBox = findViewById(R.id.notificationBox);
         SharedPreferences prefs = getSharedPreferences("notifications", MODE_PRIVATE);
         String notifications = prefs.getString("data", "No notifications yet.");
         notificationBox.setText(notifications);
     }
-
 }

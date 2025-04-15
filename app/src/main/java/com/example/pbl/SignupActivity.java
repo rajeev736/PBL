@@ -1,7 +1,6 @@
 package com.example.pbl;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,10 +9,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class SignupActivity extends AppCompatActivity {
 
     EditText nameInput, emailInput, passwordInput;
     Button signupButton;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,8 @@ public class SignupActivity extends AppCompatActivity {
         passwordInput = findViewById(R.id.passwordInput);
         signupButton = findViewById(R.id.signupButton);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
         signupButton.setOnClickListener(v -> {
             String name = nameInput.getText().toString().trim();
             String email = emailInput.getText().toString().trim();
@@ -32,27 +37,28 @@ public class SignupActivity extends AppCompatActivity {
 
             if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(SignupActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-            } else {
-                // Save user credentials and name to SharedPreferences
-                SharedPreferences prefs = getSharedPreferences("login", MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("name", name);
-                editor.putString("email", email);
-                editor.putString("password", password);
-                editor.apply();
-
-                Toast.makeText(SignupActivity.this, "Signup successful! Please login.", Toast.LENGTH_SHORT).show();
-
-                // Navigate to LoginActivity
-                startActivity(new Intent(SignupActivity.this, LoginActivity.class));
-                finish();
+                return;
             }
+
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            // Optionally save user's name locally or on Firebase Realtime DB / Firestore
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                            Toast.makeText(SignupActivity.this, "Signup successful! Please login.", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(SignupActivity.this, "Signup failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
         });
+
         TextView loginRedirectText = findViewById(R.id.goToLogin);
         loginRedirectText.setOnClickListener(v -> {
             startActivity(new Intent(SignupActivity.this, LoginActivity.class));
-            finish(); // Optional
+            finish();
         });
-
     }
 }

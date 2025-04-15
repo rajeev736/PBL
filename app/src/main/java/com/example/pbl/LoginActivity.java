@@ -1,7 +1,6 @@
 package com.example.pbl;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,19 +9,26 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class LoginActivity extends AppCompatActivity {
 
     EditText emailInput, passwordInput;
     Button loginButton;
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Check if already logged in
-        SharedPreferences loginPrefs = getSharedPreferences("login", MODE_PRIVATE);
-        if (loginPrefs.getBoolean("loggedIn", false)) {
+        // Firebase auth instance
+        auth = FirebaseAuth.getInstance();
+
+        // Already logged in?
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
             startActivity(new Intent(this, DashboardActivity.class));
             finish();
             return;
@@ -41,21 +47,17 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            // Fetch saved credentials from signup
-            SharedPreferences userPrefs = getSharedPreferences("user_data", MODE_PRIVATE);
-            String savedEmail = userPrefs.getString("email", "");
-            String savedPassword = userPrefs.getString("password", "");
-
-            if (inputEmail.equals(savedEmail) && inputPassword.equals(savedPassword)) {
-                // Save login state
-                loginPrefs.edit().putBoolean("loggedIn", true).apply();
-
-                // Navigate to Dashboard
-                startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
-                finish();
-            } else {
-                Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-            }
+            // Firebase login
+            auth.signInWithEmailAndPassword(inputEmail, inputPassword)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            // Navigate to Dashboard
+                            startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         });
 
         TextView signupRedirectText = findViewById(R.id.goToSignup);

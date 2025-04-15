@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "740097624307",
+    "project_id": "dsapbl",
+    "storage_bucket": "dsapbl.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740097624307:android:4f4270d9baf67747374f86",
+        "android_client_info": {
+          "package_name": "com.example.pbl"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfgDfHp-bhXXT77sIRu_SBLQ4Eo0oBEos"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

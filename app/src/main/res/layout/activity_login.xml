@@ -12,7 +12,7 @@
         android:gravity="center_horizontal"
         android:padding="24dp">
 
-        <!-- App Logo -->
+
         <ImageView
             android:id="@+id/logoImage"
             android:layout_width="120dp"
@@ -21,7 +21,6 @@
             android:src="@drawable/splash_logo"
             android:contentDescription="App Logo" />
 
-        <!-- Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +38,6 @@
             android:textColor="#777"
             android:layout_marginBottom="24dp" />
 
-        <!-- Email Input -->
         <EditText
             android:id="@+id/emailInput"
             android:layout_width="match_parent"
@@ -51,7 +49,6 @@
             android:background="@drawable/edittext_background"
             android:layout_marginBottom="16dp" />
 
-        <!-- Password Input -->
         <EditText
             android:id="@+id/passwordInput"
             android:layout_width="match_parent"
@@ -63,7 +60,7 @@
             android:background="@drawable/edittext_background"
             android:layout_marginBottom="24dp" />
 
-        <!-- Login Button -->
+
         <Button
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
@@ -87,7 +84,6 @@
             android:textStyle="bold"
             android:clickable="true"
             android:focusable="true" />
-
 
     </LinearLayout>
 </ScrollView>
