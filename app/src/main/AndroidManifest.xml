@@ -5,9 +5,9 @@
 
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
+        android:fullBackupContent="false"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -41,7 +41,10 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-        <activity android:name=".DashboardActivity" />
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".AnalysisActivity" />
+        <activity android:name=".AccountsActivity" />
+        <activity android:name=".MoreActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignupActivity"/>
 

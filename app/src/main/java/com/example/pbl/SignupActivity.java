@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -43,8 +45,15 @@ public class SignupActivity extends AppCompatActivity {
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            // Optionally save user's name locally or on Firebase Realtime DB / Firestore
                             FirebaseUser user = firebaseAuth.getCurrentUser();
+                            if (user != null) {
+                                String uid = user.getUid();
+
+                                // Save user's name to Firebase Realtime Database
+                                DatabaseReference ref = FirebaseDatabase.getInstance()
+                                        .getReference("users");
+                                ref.child(uid).child("name").setValue(name);
+                            }
 
                             Toast.makeText(SignupActivity.this, "Signup successful! Please login.", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(SignupActivity.this, LoginActivity.class));

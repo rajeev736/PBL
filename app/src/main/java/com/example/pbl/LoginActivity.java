@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         // Already logged in?
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
-            startActivity(new Intent(this, DashboardActivity.class));
+            startActivity(new Intent(this, HomeActivity.class));
             finish();
             return;
         }
@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             // Navigate to Dashboard
-                            startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                             finish();
                         } else {
                             Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
